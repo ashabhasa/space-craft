@@ -17,6 +17,23 @@
    :isp           4354
    :max-fuel-rate (/ 13897 470)})
 
+(defn stage
+  "When fuel reserves are exhausted, separate stages. Otherwise, return craft unchanged"
+  [craft]
+  (cond
+    ; Still fuel left
+    (pos? (:fuel-mass craft))
+    craft
+
+    ; No remaining stages
+    (nil? (:next-stage craft))
+    craft
+
+    ; Stage!
+    :else
+    (merge (:next-stage craft)
+           (select-keys craft [:time :position :velocity]))))
+
 (defn mass
   "The total mass of the craft"
   [craft]
