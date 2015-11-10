@@ -14,7 +14,7 @@
 
 
 (deftest makes-orbit
-  (let [trajectory (->> (atlas-v)
+  (let [trajectory (->> (atlas-v (centaur))
                         prepare
                         (trajectory 1))]
     (when (crashed? trajectory)
