@@ -10,6 +10,14 @@
    :max-fuel-rate (/ 284450 253)
    :max-thrust    4.152e6})
 
+(defn centaur
+  "The upper rocket stage"
+  []
+  {:dry-mass 2361
+   :fuel-mass 13897
+   :isp 4354
+   :max-fuel-rate (/ 13897 470)})
+
 (defn mass
   "The total mass of the craft"
   [craft]
