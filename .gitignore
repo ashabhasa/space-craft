@@ -9,3 +9,12 @@ pom.xml.asc
 /.nrepl-port
 .hgignore
 .hg/
+
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
