@@ -63,6 +63,14 @@
               :y earth-equatorial-speed
               :z 0}})
 
+(def ascent
+  "The start and the end times for the ascent burn."
+  [0 3000])
+
+(def circularization
+  "The start and end times for the circularization burn."
+  [4000 1000])
+
 (defn prepare
   "Prepares a craft for launch from an equatorial space center"
   [craft]
@@ -112,14 +120,28 @@
 (defn fuel-rate
   "How fast is fuel, in kilograms/second, consumed by the craft?"
   [craft]
-  (if (pos? (:fuel-mass craft))
+  (cond
+    ; Out of fuel
+    (<= (:fuel-mass craft) 0)
+    0
+
+    ; Ascent burn
+    (<= (first ascent) (:time craft) (last ascent))
     (:max-fuel-rate craft)
-    0))
+
+    ; Circularization burn
+    (<= (first circularization) (:time craft) (last circularization))
+    (:max-fuel-rate craft)
+
+    :else 0))
 
 (defn thrust
   "How much force, in newtons, does the craft's rocket engines exert?"
   [craft]
   (* (fuel-rate craft) (:isp craft)))
+
+(declare scale)
+(declare unit-vector)
 
 (defn engine-force
   "The force vector, each component in Newtons, due to the rocket engine."
@@ -220,4 +242,8 @@
   "Scales coordinates to magnitude 1."
   [coordinates]
   (scale (/ (magnitude coordinates)) coordinates))
+
+
+
+
 
