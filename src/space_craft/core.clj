@@ -2,20 +2,19 @@
   (:gen-class))
 
 (defn atlas-v
-  []
+  [next-stage]
   {:dry-mass      50050
    :fuel-mass     284450
-   :time          0
    :isp           3050
    :max-fuel-rate (/ 284450 253)
-   :max-thrust    4.152e6})
+   :next-stage    next-stage})
 
 (defn centaur
   "The upper rocket stage"
   []
-  {:dry-mass 2361
-   :fuel-mass 13897
-   :isp 4354
+  {:dry-mass      2361
+   :fuel-mass     13897
+   :isp           4354
    :max-fuel-rate (/ 13897 470)})
 
 (defn mass
