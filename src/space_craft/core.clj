@@ -147,7 +147,7 @@
     ; And our velocity changes based on our acceleration
     :velocity (merge-with +
                           (:velocity craft)
-                          (scale dt (acceleration caraft)))))
+                          (scale dt (acceleration craft)))))
 (defn trajectory
   "Returns all future states of the craft, at dt-second intervals"
   [dt craft]
