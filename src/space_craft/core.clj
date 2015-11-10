@@ -159,19 +159,20 @@
   "Function that takes a craft at a particular time,
   and returns a version of it dt seconds later"
   [craft dt]
-  (assoc craft
-    ; Time advances by dt seconds
-    :time (+ dt (:time craft))
-    ; We burn some fuel
-    :fuel-mass (- (:fuel-mass craft) (* dt (fuel-rate craft)))
-    ; Our position changes based on our velocity
-    :position (merge-with +
-                          (:position craft)
-                          (scale dt (:velocity craft)))
-    ; And our velocity changes based on our acceleration
-    :velocity (merge-with +
-                          (:velocity craft)
-                          (scale dt (acceleration craft)))))
+  (let [craft (stage craft)]
+    (assoc craft
+      ; Time advances by dt seconds
+      :time (+ dt (:time craft))
+      ; We burn some fuel
+      :fuel-mass (- (:fuel-mass craft) (* dt (fuel-rate craft)))
+      ; Our position changes based on our velocity
+      :position (merge-with +
+                            (:position craft)
+                            (scale dt (:velocity craft)))
+      ; And our velocity changes based on our acceleration
+      :velocity (merge-with +
+                            (:velocity craft)
+                            (scale dt (acceleration craft))))))
 (defn trajectory
   "Returns all future states of the craft, at dt-second intervals"
   [dt craft]
