@@ -16,7 +16,7 @@
 (deftest makes-orbit
   (let [trajectory (->> (atlas-v)
                         prepare
-                        (trajectory 100))]
+                        (trajectory 1))]
     (when (crashed? trajectory)
       (println "Crashed at" (crash-time trajectory) "seconds")
 

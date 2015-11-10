@@ -187,7 +187,7 @@
 (defn apoapsis
   "The highest altitude achieved during a trajectory"
   [trajectory]
-  (apply max (map altitude trajectory)))
+  (apply max (map altitude (flight trajectory))))
 
 (defn apoapsis-time
   "The time of apoapsis"
