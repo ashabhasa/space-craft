@@ -124,10 +124,7 @@
 (defn engine-force
   "The force vector, each component in Newtons, due to the rocket engine."
   [craft]
-  (let [t (thrust craft)]
-    {:x t
-     :y 0
-     :z 0}))
+  (scale (thrust craft) (unit-vector (orientation craft))))
 
 (defn total-force
   "Total force on a craft"
@@ -218,3 +215,9 @@
   "The time of apoapsis"
   [trajectory]
   (:time (apply max-key altitude (flight trajectory))))
+
+(defn unit-vector
+  "Scales coordinates to magnitude 1."
+  [coordinates]
+  (scale (/ (magnitude coordinates)) coordinates))
+
