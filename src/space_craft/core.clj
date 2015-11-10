@@ -142,6 +142,7 @@
 
 (declare scale)
 (declare unit-vector)
+(declare orientation)
 
 (defn engine-force
   "The force vector, each component in Newtons, due to the rocket engine."
@@ -243,7 +244,45 @@
   [coordinates]
   (scale (/ (magnitude coordinates)) coordinates))
 
+(defn dot-product
+  "Finds the inner product of two x, y, z coordinate maps."
+  [c1 c2]
+  (+ (* (:x c1) (:x c2))
+     (* (:y c1) (:y c2))
+     (* (:z c1) (:z c2))))
 
+(defn projection
+  "The component of coordinate map a in the direction of coordinate map b."
+  [a b]
+  (let [b (unit-vector b)]
+    (scale (dot-product a b) b)))
 
+(defn rejection
+  "The component of coordinate map a *not* in the direction of coordinate map b."
+  [a b]
+  (let [a' (projection a b)]
+    {:x (- (:x a) (:x a'))
+     :y (- (:y a) (:y a'))
+     :z (- (:z a) (:z a'))}))
+
+(defn orientation
+  "What direction is the craft pointing?"
+  [craft]
+  (cond
+    ; Initially, point along the *position* vector of the craft -- that is
+    ; to say, stright up, away from the earth.
+
+    (<= (first ascent) (:time craft) (last ascent))
+    (:position craft)
+
+    ; During the circularization burn, we want to burn *sideways*, in the
+    ; direction of the orbit. We'll find the component of our velocity
+    ; which is aligned with our position vector (that is to say, the vertical
+    ; velocity), and subtract the vertical component, All that's left is the
+    ; *horizontal* part of our velocity.
+    (<= (first circularization) (:time craft) (last circularization))
+    (rejection (:velocity craft) (:position craft))
+    ; Otherwise, just point stright ahead.
+    :else (:velocity craft)))
 
 
